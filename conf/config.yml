@@ -93,6 +93,7 @@ maxMessageSize: 1048576
 
 #Authentication
 auth:
+#  disable authentication
   type: none
 
 #   # reading users and passwords from a file
@@ -101,9 +102,9 @@ auth:
 #     # Path to the user file. Can be json, js or yml
 #     path: ./users.yml
 #     # the name of a HMAC digest algorithm
-#     hash: 'md5'
+#     hash: 'sha256'
 #     # the number of times the algorithm should be applied
-#     iterations: 100
+#     iterations: 65536
 #     # the length of the resulting key
 #     keyLength: 32
 
