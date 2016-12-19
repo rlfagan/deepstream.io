@@ -93,20 +93,20 @@ maxMessageSize: 1048576
 
 #Authentication
 auth:
-#  disable authentication
-  type: none
+  # reading users and passwords from a file
+  type: file
+  options:
+    # Path to the user file. Can be json, js or yml
+    path: ./users.yml
+    # the name of a HMAC digest algorithm
+    hash: 'sha256'
+    # the number of times the algorithm should be applied
+    iterations: 65536
+    # the length of the resulting key
+    keyLength: 32
 
-#   # reading users and passwords from a file
-#   type: file
-#   options:
-#     # Path to the user file. Can be json, js or yml
-#     path: ./users.yml
-#     # the name of a HMAC digest algorithm
-#     hash: 'sha256'
-#     # the number of times the algorithm should be applied
-#     iterations: 65536
-#     # the length of the resulting key
-#     keyLength: 32
+#  # disable authentication
+#  type: none
 
 #   # getting permissions from a http webhook
 #   type: http
