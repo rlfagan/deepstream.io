@@ -1,5 +1,5 @@
 {
-  "name": "deepstream.io",
+  "name": "@msa/deepstream.io",
   "version": "2.1.2",
   "description": "a scalable server for realtime webapps",
   "main": "src/deepstream.io.js",
@@ -53,5 +53,8 @@
   "homepage": "http://deepstream.io",
   "eslintConfig": {
     "extends": "deepstream"
+  },
+  "publishConfig": {
+    "registry": "https://npm.wireless.msasafety.com"
   }
 }

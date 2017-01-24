@@ -23,6 +23,7 @@ exports.get = function () {
     timeBetweenSendingQueuedPackages: 1,
     maxMessagesPerPacket: 1000,
     heartbeatInterval: 30000,
+    httpServer: null, // Added by ccron, option to reuse existing web server
 
     /*
     * SSL Configuration
@@ -51,6 +52,7 @@ exports.get = function () {
     messageConnector: require('./default-plugins/noop-message-connector'),
     cache: require('./default-plugins/local-cache'),
     storage: require('./default-plugins/noop-storage'),
+    subscriptionEvents: null,  // new plugin added by ccron
 
     /*
     * Storage options
