@@ -35,7 +35,29 @@ class SubscriptionRegistry {
       NOT_SUBSCRIBED: C.EVENT.NOT_SUBSCRIBED
     }
 
+    // Added by ccron, class that lets users handle subscription events for monitoring/injecting data
+    if (options.subscriptionEvents) {
+      this._subscriptionEvents = new options.subscriptionEvents(this, topic, options)
+    }
+
     this._setupRemoteComponents(clusterTopic)
+  }
+
+  // Added by ccron, pulls the version from a message if applicable
+  static findVersion(message) {
+    const parts = message.split(C.MESSAGE_PART_SEPERATOR)
+
+    if (parts.length < 2) {
+      return null
+    }
+
+    const action = parts[1]
+
+    if (action && (action === C.ACTIONS.UPDATE || action === C.ACTIONS.PATCH)) {
+      return parseInt(parts[3], 10)
+    }
+
+    return null
   }
 
   /**
@@ -202,6 +224,14 @@ class SubscriptionRegistry {
       msgString += C.MESSAGE_SEPERATOR
     }
 
+    // Added by cccron, if it has a version and we've already sent this version, don't send
+    const version = SubscriptionRegistry.findVersion(msgString)
+    if (version && version <= this._subscriptions[name]._version) {
+      return
+    } else if (version) {
+      this._subscriptions[name]._version = version
+    }
+
     // if not already a delayed broadcast, create it
     let delayedBroadcasts = this._delayedBroadcasts[name]
     if (delayedBroadcasts === undefined) {
@@ -262,6 +292,8 @@ class SubscriptionRegistry {
   subscribe(name, socketWrapper) {
     if (this._subscriptions[name] === undefined) {
       this._subscriptions[name] = []
+      // Added by ccron, for version checking on send method
+      this._subscriptions[name]._version = null
     }
 
     if (this._subscriptions[name].indexOf(socketWrapper) !== -1) {
@@ -298,6 +330,11 @@ class SubscriptionRegistry {
       )
     }
 
+    // Added by ccron, notify plugin about subscription
+    if (this._subscriptionEvents) {
+      this._subscriptionEvents.onSubscriptionMade(name, socketWrapper.user)
+    }
+
     this._clusterSubscriptions.add(name)
 
     const logMsg = `for ${this._topic}:${name} by ${socketWrapper.user}`
@@ -330,6 +367,11 @@ class SubscriptionRegistry {
     if (this._subscriptions[name].length === 1) {
       this._clusterSubscriptions.remove(name)
       delete this._subscriptions[name]
+
+      // Added by ccron, notify plugin about subscription
+      if (this._subscriptionEvents) {
+        this._subscriptionEvents.onSubscriptionRemoved(name, socketWrapper.user)
+      }
     } else {
       this._subscriptions[name].splice(this._subscriptions[name].indexOf(socketWrapper), 1)
     }

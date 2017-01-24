@@ -33,8 +33,13 @@ module.exports = class ConnectionEndpoint extends events.EventEmitter {
     this._wsReady = false
     this._wsServerClosed = false
 
-    this._server = this._createHttpServer()
-    this._server.listen(this._options.port, this._options.host)
+    // Modified by ccron, re-added option to use existing web server
+    if (options.httpServer) {
+      this._server = options.httpServer
+    } else {
+      this._server = this._createHttpServer()
+      this._server.listen(this._options.port, this._options.host)
+    }
     this._server.on('request', this._handleHealthCheck.bind(this))
     this._options.logger.log(
       C.LOG_LEVEL.INFO,
@@ -51,7 +56,12 @@ module.exports = class ConnectionEndpoint extends events.EventEmitter {
       this._options.heartbeatInterval,
       messageBuilder.getMsg(C.TOPIC.CONNECTION, C.ACTIONS.PING)
     )
-    this._server.once('listening', this._checkReady.bind(this))
+    // Modified by ccron, necessary for using existing web server
+    if (this._server.listening) {
+      this._checkReady()
+    } else {
+      this._server.once('listening', this._checkReady.bind(this))
+    }
     this._ws.on('error', this._onError.bind(this))
     this._ws.on('connection', this._onConnection.bind(this))
 
