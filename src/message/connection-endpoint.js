@@ -56,9 +56,9 @@ module.exports = class ConnectionEndpoint extends events.EventEmitter {
       this._options.heartbeatInterval,
       messageBuilder.getMsg(C.TOPIC.CONNECTION, C.ACTIONS.PING)
     )
-    // Modified by ccron, necessary for using existing web server
+    // Modified by ccron, necessary for using existing web server, perform on next tick
     if (this._server.listening) {
-      this._checkReady()
+      setTimeout(() => this._checkReady(), 1)
     } else {
       this._server.once('listening', this._checkReady.bind(this))
     }
