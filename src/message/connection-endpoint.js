@@ -7,7 +7,7 @@ const SocketWrapper = require('./socket-wrapper')
 const events = require('events')
 const http = require('http')
 const https = require('https')
-const uws = require('uws')
+const uws = require('@discordjs/uws')
 
 const OPEN = 'OPEN'
 

@@ -1,4 +1,4 @@
-var uws = require('uws'),
+var uws = require('@discordjs/uws'),
 	events = require( 'events' ),
 	utils = require( 'util' );
 
