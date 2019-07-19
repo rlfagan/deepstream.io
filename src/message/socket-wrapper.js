@@ -3,7 +3,7 @@
 const C = require('../constants/constants')
 const messageBuilder = require('./message-builder')
 const utils = require('util')
-const uws = require('uws')
+const uws = require('@discordjs/uws')
 
 const EventEmitter = require('events').EventEmitter
 
