@@ -11,4 +11,9 @@ MSA Notes:
 ## https://deepstream.io/
 
 ![Elton](elton-square.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frlfagan%2Fdeepstream.io.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frlfagan%2Fdeepstream.io?ref=badge_shield)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frlfagan%2Fdeepstream.io.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frlfagan%2Fdeepstream.io?ref=badge_large)
